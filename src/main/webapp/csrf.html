@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSRF</title>
+</head>
+<body>
+<div id="login-panel">
+    用户名：<input type="text" id="login-username" /><button id="login-btn">登录</button>
+</div>
+<div id="user-panel" style="display: none;">
+    <span id="username-label"></span>
+</div>
+<div>
+    <img src="images/cherries.jpg" />
+</div>
+<div>
+    <button id="buy-btn">购买</button>
+</div>
+<script language="JavaScript" src="js/jquery-3.2.1.js"></script>
+<script language="JavaScript">
+    var Page = {
+        init: function () {
+            this._bindEvents();
+            this._checkLogin(function (isLogin, username) {
+                if (isLogin) {
+                    $('#login-panel').hide();
+                    $('#user-panel').show();
+                    $('#username-label').text(username);
+                }
+            });
+        },
+        _bindEvents: function () {
+            var self = this;
+            $('#login-btn').click(function () {
+                var username = $('#login-username').val();
+                if (username == '') {
+                    alert('请输入用户名');
+                    return;
+                };
+
+                self._login(username, function () {
+                    alert("login success");
+                    window.location.reload();
+                });
+            });
+            
+            $('#buy-btn').click(function () {
+                if (window.confirm('确定要购买吗？')) {
+                    self._buy("cherries", "京东");
+                }
+            });
+        },
+        _login: function (username, callback) {
+            var self = this;
+            $.ajax({
+                url: 'login',
+                data: {username: username},
+                dataType: 'json',
+                success: function (res) {
+                    callback.call(self, res.result == '1');
+                },
+                error: function (err) {
+
+                }
+            });
+        },
+        _checkLogin: function (callback) {
+            var self = this;
+            $.ajax({
+                url: 'checkLogin',
+                dataType: 'json',
+                success: function (res) {
+                    callback.call(self, res.isLogin, res.username)
+                },
+                error: function (err) {
+
+                }
+            });
+        },
+        _buy: function (productId, vendorId) {
+            $.ajax({
+                url: 'buy',
+                data: {productId: productId, vendorId: vendorId},
+                type: "POST",
+                dataType: "json",
+                success: function (res) {
+                    alert(res.result);
+                },
+                error: function (err) {
+
+                }
+            })
+        }
+    };
+    $(function () {
+        Page.init();
+    });
+</script>
+</body>
+</html>

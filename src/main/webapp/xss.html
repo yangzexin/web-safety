@@ -1,0 +1,39 @@
+<html>
+<body>
+<h2>Xss</h2>
+<div>
+    <div>Msg: </div>
+    <div>
+        <textarea id="echo-input"></textarea>
+    </div>
+    <span><button id="echo-submit-btn">Submit</button></span>
+    <div>
+        Echo: <span id="echo-text"></span>
+    </div>
+</div>
+<script language="javascript" src="js/jquery-3.2.1.js"></script>
+<script language="javascript">
+    $(function () {
+        $('#echo-submit-btn').click(function () {
+            var msg = $('#echo-input').val();
+            if (msg == '') {
+                alert('msg can\'t be empty');
+                return;
+            }
+
+            $.ajax({
+                url: 'echo',
+                data: {m: msg},
+                dataType: 'json',
+                success: function (res) {
+                    $('#echo-text').html(res.msg);
+                },
+                error: function (err) {
+
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
