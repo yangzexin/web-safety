@@ -30,7 +30,7 @@ public class XssController {
 
         Map<String, Object> resultData = new HashMap<String, Object>();
 
-        resultData.put("msg", "echo: "+ m);
+        resultData.put("msg", ""+ m);
 
         return resultData;
     }
