@@ -25,4 +25,6 @@
     <context:component-scan base-package="tests" />
 
     <context:property-placeholder location="classpath*:*.properties" />
+
+    <import resource="datasource.xml" />
 </beans>
