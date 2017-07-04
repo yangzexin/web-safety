@@ -22,7 +22,7 @@ public class ExceptionAdvice {
         logger.error("", e);
         Map<String, Object> resultData = new HashMap<String, Object>();
         resultData.put("code", -1);
-        resultData.put("msg", e.getMessage());
+        resultData.put("msg", "");
 
         return resultData;
     }

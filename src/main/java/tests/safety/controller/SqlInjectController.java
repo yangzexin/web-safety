@@ -24,7 +24,7 @@ public class SqlInjectController {
     @RequestMapping("getUserInfo")
     @ResponseBody
     public Object getUserInfo(String id, String name) {
-        User user = null;
+        Object user = null;
         if (!StringUtils.isEmpty(id)) {
             user = userMapper.selectUserById(id);
         } else if (!StringUtils.isEmpty(name)) {
