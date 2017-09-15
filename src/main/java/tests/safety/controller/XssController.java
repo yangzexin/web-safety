@@ -19,6 +19,20 @@ import java.util.UUID;
 public class XssController {
     private static final Logger logger = LoggerFactory.getLogger(XssController.class);
 
+    private String leavedMsg = "";
+
+    @RequestMapping("getMsg")
+    @ResponseBody
+    public Object getMsg(HttpServletResponse response) {
+        Cookie tokenIdCookie = new Cookie("tokenId", UUID.randomUUID().toString());
+        response.addCookie(tokenIdCookie);
+        Map<String, Object> resultData = new HashMap<String, Object>();
+
+        resultData.put("msg", leavedMsg);
+
+        return resultData;
+    }
+    
     /**
      * <script language='javascript'>$.ajax({url: 'steal', data: {c: document.cookie}});</script>
      * */
@@ -31,6 +45,7 @@ public class XssController {
         Map<String, Object> resultData = new HashMap<String, Object>();
 
         resultData.put("msg", ""+ m);
+        leavedMsg = m;
 
         return resultData;
     }
